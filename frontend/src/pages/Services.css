@@ -1,0 +1,114 @@
+/* ============================================
+   Services Page Styles
+   ============================================ */
+
+.services-list-section {
+    background: var(--light-bg);
+}
+
+.services-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--space-2xl);
+}
+
+.service-item {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.service-icon-wrapper {
+    padding: var(--space-xl);
+    background: var(--gradient-card);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary);
+    transition: all var(--transition-base);
+}
+
+.service-item:hover .service-icon-wrapper {
+    background: var(--gradient-primary);
+    color: var(--white);
+}
+
+.service-content {
+    padding: var(--space-xl);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-title {
+    font-size: 1.4rem;
+    margin-bottom: var(--space-md);
+    color: var(--dark);
+}
+
+.service-description {
+    color: var(--medium-gray);
+    margin-bottom: var(--space-lg);
+    flex-grow: 1;
+}
+
+.service-features {
+    margin-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.service-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    color: var(--dark-gray);
+}
+
+.service-features li svg {
+    color: var(--primary);
+    flex-shrink: 0;
+}
+
+.service-btn {
+    width: 100%;
+    justify-content: center;
+}
+
+/* Service CTA Banner */
+.service-cta {
+    background: var(--gradient-primary);
+    padding: var(--space-3xl) 0;
+    color: var(--white);
+    text-align: center;
+}
+
+.service-cta h2 {
+    color: var(--white);
+    margin-bottom: var(--space-md);
+}
+
+.service-cta p {
+    color: rgba(255, 255, 255, 0.9);
+    max-width: 600px;
+    margin: 0 auto var(--space-xl);
+    font-size: 1.1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .services-list-grid {
+        grid-template-columns: 1fr;
+    }
+}

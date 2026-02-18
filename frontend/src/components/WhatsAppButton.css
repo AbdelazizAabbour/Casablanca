@@ -1,0 +1,112 @@
+.whatsapp-button {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    /* Changed to left */
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    color: white;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.whatsapp-button:hover {
+    background-color: #128C7E;
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.whatsapp-button svg {
+    width: 32px;
+    height: 32px;
+    fill: currentColor;
+}
+
+/* Tooltip on hover - positioned to the RIGHT of the button now */
+.whatsapp-tooltip {
+    position: absolute;
+    left: 70px;
+    /* Changed to left */
+    background-color: #333;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.whatsapp-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -6px;
+    /* Arrow on left side */
+    transform: translateY(-50%);
+    border-width: 6px 6px 6px 0;
+    /* Arrow pointing left */
+    border-style: solid;
+    border-color: transparent #333 transparent transparent;
+}
+
+.whatsapp-button:hover .whatsapp-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+}
+
+/* Subtle pulse animation for attention */
+@keyframes whatsapp-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+}
+
+.whatsapp-button {
+    animation: whatsapp-pulse 2s infinite;
+}
+
+.whatsapp-button:hover {
+    animation: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .whatsapp-button {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        left: 20px;
+        /* Changed to left */
+    }
+
+    .whatsapp-button svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* Hide tooltip on mobile to avoid covering content */
+    .whatsapp-tooltip {
+        display: none;
+    }
+}

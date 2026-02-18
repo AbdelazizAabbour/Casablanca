@@ -1,0 +1,149 @@
+/* ============================================
+   Appointment Page Styles
+   ============================================ */
+
+.appointment-section {
+    background: var(--light-bg);
+}
+
+.appointment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-4xl);
+}
+
+.appointment-intro .lead-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--medium-gray);
+    margin-bottom: var(--space-2xl);
+}
+
+/* Steps */
+.appointment-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.step-item {
+    position: relative;
+    padding-left: 50px;
+}
+
+.step-number {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--gradient-primary);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.step-item::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 32px;
+    bottom: -24px;
+    width: 2px;
+    background: rgba(194, 52, 100, 0.2);
+}
+
+.step-item:last-child::after {
+    display: none;
+}
+
+.step-item h4 {
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+    color: var(--dark);
+}
+
+.step-item p {
+    color: var(--neutral-gray);
+    font-size: 0.9rem;
+}
+
+/* Info Box */
+.appointment-info-box {
+    background: var(--white);
+    padding: var(--space-lg);
+    border-radius: var(--radius-md);
+    border-left: 4px solid var(--accent);
+    box-shadow: var(--shadow-sm);
+}
+
+.appointment-info-box h4 {
+    margin-bottom: var(--space-md);
+    color: var(--accent);
+}
+
+.info-hours li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    color: var(--dark-gray);
+}
+
+/* Form Card */
+.appointment-form-card {
+    background: var(--white);
+    padding: var(--space-2xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    border-top: 5px solid var(--secondary);
+}
+
+.form-title {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-xl);
+    color: var(--dark);
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.form-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: 2px;
+}
+
+.form-note {
+    font-size: 0.8rem;
+    color: var(--neutral-gray);
+    margin-top: var(--space-sm);
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .appointment-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-3xl);
+    }
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+}

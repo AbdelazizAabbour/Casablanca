@@ -1,0 +1,41 @@
+.go-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-primary);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(194, 52, 100, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all var(--transition-base);
+    z-index: 1000;
+    cursor: pointer;
+    border: none;
+}
+
+.go-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.go-to-top:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 25px rgba(194, 52, 100, 0.45);
+}
+
+@media (max-width: 768px) {
+    .go-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+    }
+}

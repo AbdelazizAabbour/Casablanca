@@ -1,0 +1,88 @@
+/* ============================================
+   Admin Login Styles
+   ============================================ */
+
+.admin-login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-dark);
+    padding: var(--space-2xl);
+}
+
+.login-container {
+    width: 100%;
+    max-width: 420px;
+}
+
+.login-card {
+    background: var(--white);
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-2xl);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.admin-logo {
+    margin-bottom: var(--space-lg);
+    display: flex;
+    justify-content: center;
+}
+
+.login-header h2 {
+    font-size: 1.6rem;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.login-header p {
+    color: var(--medium-gray);
+    font-size: 0.95rem;
+}
+
+.login-form .form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.login-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: var(--space-xl) 0;
+    color: var(--neutral-gray);
+    font-size: 0.85rem;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.login-divider span {
+    padding: 0 10px;
+}
+
+.google-btn {
+    background: var(--white);
+    color: var(--dark-gray);
+    border: 1px solid var(--light-gray);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 500;
+}
+
+.google-btn:hover {
+    background: var(--light-bg);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}

@@ -1,0 +1,112 @@
+================================================================================
+ROADMAP DU PROJET: CABINET HANNIT (MEDICAL WEBSITE)
+De A à Z (Architecture, Développement, Déploiement)
+================================================================================
+
+PHASE 1 : INITIALISATION ET CONFIGURATION
+--------------------------------------------------------------------------------
+1. Mettre en place l'environnement de développement
+   - Installer PHP 8+, Composer, Node.js, NPM.
+   - Installer la base de données (SQLite par défaut ou MySQL).
+
+2. Initialisation du Backend (Laravel 9/10)
+   - Création du projet : `composer create-project laravel/laravel backend`
+   - Configuration de `.env` (Base de données, App URL).
+   - Installation de Sanctum pour l'authentification API.
+   - Installation de Socialite pour Google Login.
+
+3. Initialisation du Frontend (React + Vite)
+   - Création du projet : `npm create vite@latest frontend -- --template react`
+   - Installation des dépendances : `react-router-dom`, `axios`, `aos` (animations).
+   - Configuration du proxy Vite pour communiquer avec Laravel (port 8000).
+
+PHASE 2 : DEVELOPPEMENT BACKEND (API)
+--------------------------------------------------------------------------------
+4. Conception de la Base de Données (Migrations)
+   - `users` : Admin et utilisateurs (avec colonnes google_id).
+   - `services` : Liste des prestations (Kiné, Physio, etc.).
+   - `doctors` : Équipe médicale.
+   - `appointments` : Gestion des rendez-vous (date, statut, patient).
+   - `contact_messages` : Messages reçus via le formulaire.
+
+5. Création des Modèles et Contrôleurs
+   - `ServiceController` : API pour lister les services.
+   - `DoctorController` : API pour lister les docteurs.
+   - `AppointmentController` : Création et gestion des RDV.
+   - `ContactController` : Envoi de messages.
+   - `AdminController` : Statistiques du dashboard.
+   - `AuthController` : Login Admin (Email/Password + Google).
+
+6. Sécurité et Authentification
+   - Mise en place des Middlewares Sanctum (`auth:sanctum`).
+   - Protection des routes Admin (`/api/admin/*`).
+   - Validation des données entrantes (`Request $request->validate()`).
+
+7. Seeding (Données de test)
+   - Création d'un Admin par défaut (`db:seed`).
+   - Génération de faux services et docteurs pour le développement.
+
+PHASE 3 : DEVELOPPEMENT FRONTEND (UI/UX)
+--------------------------------------------------------------------------------
+8. Architecture du Frontend
+   - Mise en place du Router (`react-router-dom`).
+   - Création de la structure : `/pages`, `/components`, `/services`, `/hooks`.
+
+9. Création des Pages Publiques
+   - `Home.jsx` : Page d'accueil avec Hero section, Services, Témoignages.
+   - `About.jsx` : Présentation du cabinet.
+   - `Services.jsx` : Détail des prestations.
+   - `Doctors.jsx` : Présentation de l'équipe.
+   - `Contact.jsx` : Formulaire de contact fonctionnel.
+   - `Appointment.jsx` : Formulaire de prise de rendez-vous.
+
+10. Espace Administration (Dashboard)
+    - `AdminLogin.jsx` : Page de connexion sécurisée (Email + Google).
+    - `AdminDashboard.jsx` : Vue d'ensemble, gestion des RDV et messages.
+    - Protection des routes via `localStorage` (Token).
+
+11. Composants UI & UX
+    - `Navbar.jsx` : Navigation responsive.
+    - `Footer.jsx` : Pied de page complet.
+    - `SplashScreen.jsx` : Animation d'introduction avec logo.
+    - `WhatsAppButton.jsx` : Bouton flottant pour contact rapide.
+    - `ScrollToTop` & `GoToTop` : Amélioration de la navigation.
+
+PHASE 4 : STYLING ET DESIGN
+--------------------------------------------------------------------------------
+12. Design System
+    - Palette de couleurs médicales (Bleu, Blanc, Vert, Dégradés violets).
+    - Typographie (Polices modernes).
+    - `index.css` : Variables CSS globales.
+
+13. Responsive Design
+    - Adaptation Mobile-First.
+    - Menu Burger pour mobile.
+    - Grilles flexibles pour les services et l'équipe.
+
+PHASE 5 : INTEGRATIONS AVANCEES
+--------------------------------------------------------------------------------
+14. Google OAuth
+    - Configuration Google Cloud Console.
+    - Intégration dans Laravel (`services.php`).
+    - Redirection et Callback dans le Frontend.
+
+15. Optimisations
+    - Lazy Loading des pages (`React.lazy`).
+    - Animations au défilement (Scroll Reveal).
+    - SEO (Titres, Méta-descriptions).
+
+PHASE 6 : TEST ET DEPLOIEMENT (ETAPES FUTURES)
+--------------------------------------------------------------------------------
+16. Tests
+    - Vérification du parcours utilisateur (Prise de RDV, Login Admin).
+    - Test Responsive sur différents appareils.
+
+17. Préparation au Déploiement
+    - Backend : Configurer `.env.production`, optimiser autoloader.
+    - Frontend : Build de production (`npm run build`).
+    - Hébergement : VPS (DigitalOcean, OVH) ou Shared Hosting.
+
+================================================================================
+FIN DE LA ROADMAP
+================================================================================
