@@ -35,4 +35,20 @@ class ContactController extends Controller
         }
         return response()->json(['message' => 'Not found'], 404);
     }
+    public function updateStatus(Request $request, $id)
+    {
+        $message = ContactMessage::find($id);
+        if (!$message) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        $request->validate([
+            'is_read' => 'required|boolean'
+        ]);
+
+        $message->update(['is_read' => $request->is_read]);
+
+        return response()->json($message);
+    }
 }
+

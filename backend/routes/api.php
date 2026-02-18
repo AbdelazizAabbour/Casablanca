@@ -42,7 +42,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Messages
     Route::get('/admin/messages', [ContactController::class, 'index']);
+    Route::patch('/admin/messages/{id}', [ContactController::class, 'updateStatus']);
     Route::delete('/admin/messages/{id}', [ContactController::class, 'destroy']);
+
+    // Admin Users Management
+    Route::get('/admin/users', [AdminController::class, 'users']);
 
     // Patients (from appointments)
     Route::get('/admin/patients', [AdminController::class, 'patients']);

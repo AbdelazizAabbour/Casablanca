@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getDashboardStats, getAppointments, updateAppointmentStatus, adminLogout } from '../services/api';
+import { getDashboardStats, getAppointments, updateAppointmentStatus, getMessages, updateMessageStatus, getPatients, getUsers, adminLogout } from '../services/api';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState('appointments'); // appointments, patients, messages
-    const [stats, setStats] = useState({ total_rdv: 0, pending_rdv: 0, today_rdv: 0 });
+    const [activeTab, setActiveTab] = useState('appointments'); // appointments, patients, messages, users
+    const [stats, setStats] = useState({ total_rdv: 0, pending_rdv: 0, today_rdv: 0, unread_messages: 0 });
     const [appointments, setAppointments] = useState([]);
     const [patients, setPatients] = useState([]);
     const [messages, setMessages] = useState([]);
+    const [users, setUsers] = useState([]);
     const [filter, setFilter] = useState('all'); // all, pending, confirmed, cancelled
     const [loading, setLoading] = useState(true);
 
@@ -25,29 +26,19 @@ const AdminDashboard = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            // Mock Data
-            const mockStats = { total_rdv: 124, pending_rdv: 5, today_rdv: 8 };
-            const mockAppointments = [
-                { id: 1, name: 'Mohammed B.', service: 'Traumatologie', date: '2026-02-18', time: '10:00', status: 'pending', phone: '0661234567', email: 'med@test.com' },
-                { id: 2, name: 'Fatima Z.', service: 'Kinésithérapie', date: '2026-02-18', time: '11:00', status: 'confirmed', phone: '0661234567', email: 'fatima@test.com' },
-                { id: 3, name: 'Karim A.', service: 'Physiothérapie', date: '2026-02-18', time: '14:30', status: 'pending', phone: '0661234567', email: 'karim@test.com' },
-                { id: 4, name: 'Sara M.', service: 'Amincissement', date: '2026-02-19', time: '09:00', status: 'cancelled', phone: '0661234567', email: 'sara@test.com' },
-                { id: 5, name: 'Yassine K.', service: 'Neurologie', date: '2026-02-19', time: '15:00', status: 'confirmed', phone: '0661234567', email: 'yass@test.com' },
-            ];
-            const mockPatients = [
-                { id: 1, name: 'Mohammed B.', email: 'med@test.com', phone: '0661234567', last_visit: '2026-02-18' },
-                { id: 2, name: 'Fatima Z.', email: 'fatima@test.com', phone: '0661234567', last_visit: '2026-02-18' },
-                { id: 3, name: 'Karim A.', email: 'karim@test.com', phone: '0661234567', last_visit: '2026-02-18' },
-            ];
-            const mockMessages = [
-                { id: 1, name: 'Ahmed T.', subject: 'Renseignement tarif', message: 'Bonjour, quel est le prix pour...', date: '2026-02-17', is_read: false },
-                { id: 2, name: 'Laila R.', subject: 'Disponibilité', message: 'Avez-vous des créneaux le samedi ?', date: '2026-02-16', is_read: true },
-            ];
+            const [statsRes, appointmentsRes, patientsRes, messagesRes, usersRes] = await Promise.all([
+                getDashboardStats(),
+                getAppointments(),
+                getPatients(),
+                getMessages(),
+                getUsers()
+            ]);
 
-            setStats(mockStats);
-            setAppointments(mockAppointments);
-            setPatients(mockPatients);
-            setMessages(mockMessages);
+            setStats(statsRes.data);
+            setAppointments(appointmentsRes.data);
+            setPatients(patientsRes.data);
+            setMessages(messagesRes.data);
+            setUsers(usersRes.data);
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
         } finally {
@@ -56,10 +47,25 @@ const AdminDashboard = () => {
     };
 
     const handleStatusChange = async (id, newStatus) => {
-        // API call placeholder
-        setAppointments(prev => prev.map(app =>
-            app.id === id ? { ...app, status: newStatus } : app
-        ));
+        try {
+            await updateAppointmentStatus(id, newStatus);
+            setAppointments(prev => prev.map(app =>
+                app.id === id ? { ...app, status: newStatus } : app
+            ));
+        } catch (error) {
+            console.error('Error updating status:', error);
+        }
+    };
+
+    const handleMarkAsRead = async (id) => {
+        try {
+            await updateMessageStatus(id, true);
+            setMessages(prev => prev.map(msg =>
+                msg.id === id ? { ...msg, is_read: true } : msg
+            ));
+        } catch (error) {
+            console.error('Error marking as read:', error);
+        }
     };
 
     const handleLogout = () => {
@@ -99,6 +105,14 @@ const AdminDashboard = () => {
                     >
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
                         Messages
+                        {stats.unread_messages > 0 && <span className="unread-count">{stats.unread_messages}</span>}
+                    </button>
+                    <button
+                        className={`nav-item ${activeTab === 'users' ? 'active' : ''}`}
+                        onClick={() => setActiveTab('users')}
+                    >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="8.5" cy="7" r="4" /><polyline points="17 11 19 13 23 9" /></svg>
+                        Utilisateurs
                     </button>
                 </nav>
                 <div className="sidebar-footer">
@@ -114,7 +128,7 @@ const AdminDashboard = () => {
                     <h1 className="page-title">Tableau de Bord</h1>
                     <div className="user-profile">
                         <div className="avatar">A</div>
-                        <span>Admin</span>
+                        <span>Asmaâ Hannit</span>
                     </div>
                 </header>
 
@@ -246,9 +260,9 @@ const AdminDashboard = () => {
                                     {patients.map(p => (
                                         <tr key={p.id}>
                                             <td className="font-medium">{p.name}</td>
-                                            <td>{p.email}</td>
+                                            <td>{p.email || 'N/A'}</td>
                                             <td>{p.phone}</td>
-                                            <td>{p.last_visit}</td>
+                                            <td>---</td>
                                             <td>
                                                 <button className="action-btn view" title="Voir dossier">
                                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" /><circle cx="12" cy="12" r="3" /></svg>
@@ -284,14 +298,16 @@ const AdminDashboard = () => {
                                         <tr key={msg.id}>
                                             <td className="font-medium">{msg.name}</td>
                                             <td>{msg.subject}</td>
-                                            <td>{msg.date}</td>
+                                            <td>{new Date(msg.created_at).toLocaleDateString()}</td>
                                             <td>
                                                 {msg.is_read ? <span className="status-badge confirmed">Lu</span> : <span className="status-badge pending">Non lu</span>}
                                             </td>
                                             <td>
-                                                <button className="action-btn view" title="Lire">
-                                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
-                                                </button>
+                                                {!msg.is_read && (
+                                                    <button className="action-btn view" onClick={() => handleMarkAsRead(msg.id)} title="Marquer comme lu">
+                                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" /><polyline points="22,6 12,13 2,6" /></svg>
+                                                    </button>
+                                                )}
                                             </td>
                                         </tr>
                                     ))}
@@ -300,6 +316,42 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                 )}
+
+                {/* Users Tab */}
+                {activeTab === 'users' && (
+                    <div className="dashboard-card animate-fadeInUp">
+                        <div className="card-header">
+                            <h2>Utilisateurs Enregistrés</h2>
+                        </div>
+                        <div className="table-responsive">
+                            <table className="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Email</th>
+                                        <th>Rôle</th>
+                                        <th>Inscrit le</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {users.map(u => (
+                                        <tr key={u.id}>
+                                            <td className="font-medium">{u.name}</td>
+                                            <td>{u.email}</td>
+                                            <td>
+                                                <span className={`status-badge ${u.is_admin ? 'confirmed' : 'pending'}`}>
+                                                    {u.is_admin ? 'Administrateur' : 'Utilisateur'}
+                                                </span>
+                                            </td>
+                                            <td>{new Date(u.created_at).toLocaleDateString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
 
             </main>
         </div>
